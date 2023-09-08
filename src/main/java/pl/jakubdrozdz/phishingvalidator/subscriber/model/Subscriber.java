@@ -24,7 +24,7 @@ public class Subscriber {
     )
     private long id;
 
-    private long phoneNumber;
+    private String phoneNumber;
 
     private int isCheckEnabled;
 

@@ -4,6 +4,6 @@ import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 
 public class SMSUtils {
     public static boolean isSMSRegistrationRequestValid(SMSRegistrationRequest smsRegistrationRequest) {
-        return smsRegistrationRequest.getSender() != null || smsRegistrationRequest.getRecipient() != null || smsRegistrationRequest.getMessage() != null;
+        return !(smsRegistrationRequest.sender() == null || smsRegistrationRequest.recipient() == null || smsRegistrationRequest.message() == null);
     }
 }

@@ -1,6 +1,7 @@
 package pl.jakubdrozdz.phishingvalidator.sms.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +23,12 @@ public class SMS {
             generator = "sms_id_sequence"
     )
     private long id;
+    @NotNull
     private String sender;
+    @NotNull
     private String recipient;
+    @NotNull
     private String message;
+    @NotNull
     private Integer isPhishing; //0 - no/not agreed to check; 1 - yes
 }

@@ -1,6 +1,7 @@
 package pl.jakubdrozdz.phishingvalidator.subscriber.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +26,10 @@ public class Subscriber {
             generator = "subscriber_id_sequence"
     )
     private long id;
-
+    @NotNull
+    @Column(unique = true)
     private String phoneNumber;
-
+    @NotNull
     private int isCheckEnabled;
 
     @OneToMany

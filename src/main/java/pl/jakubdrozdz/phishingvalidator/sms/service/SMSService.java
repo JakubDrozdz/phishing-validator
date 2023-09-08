@@ -7,5 +7,5 @@ import pl.jakubdrozdz.phishingvalidator.sms.repository.SMSRepository;
 @Service
 @RequiredArgsConstructor
 public class SMSService {
-    private SMSRepository smsRepository;
+    private final SMSRepository smsRepository;
 }

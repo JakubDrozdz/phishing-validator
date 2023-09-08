@@ -13,7 +13,7 @@ import pl.jakubdrozdz.phishingvalidator.sms.utils.SMSUtils;
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
 public class SMSController {
-    private SMSService smsService;
+    private final SMSService smsService;
 
     @PostMapping
     public String saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {

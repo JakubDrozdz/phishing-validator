@@ -4,6 +4,6 @@ import pl.jakubdrozdz.phishingvalidator.subscriber.model.SubscriberRegistrationR
 
 public class SubscriberUtils {
     public static boolean isSubscriberRegistrationRequestValid(SubscriberRegistrationRequest subscriberRegistrationRequest) {
-        return !(subscriberRegistrationRequest.phoneNumber() == null);
+        return subscriberRegistrationRequest != null && subscriberRegistrationRequest.phoneNumber() != null;
     }
 }

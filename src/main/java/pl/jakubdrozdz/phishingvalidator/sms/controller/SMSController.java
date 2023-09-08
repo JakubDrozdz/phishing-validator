@@ -2,10 +2,15 @@ package pl.jakubdrozdz.phishingvalidator.sms.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.sms.utils.SMSUtils;
+import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
 
 @Slf4j
 @RestController
@@ -16,9 +21,13 @@ public class SMSController {
     private final SMSService smsService;
 
     @PostMapping
-    public String saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {
+    public ResponseEntity<SMS> saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {
         if (!SMSUtils.isSMSRegistrationRequestValid(smsRegistrationRequest))
             throw new IllegalArgumentException("Invalid input: " + smsRegistrationRequest);
-        return "";
+        if(smsService.isSubscriberNumberValid(smsRegistrationRequest.recipient()).isEmpty()){
+            throw new SubscriberNotExistingException("Subscriber with phone number " + smsRegistrationRequest.recipient() + " has not been found. Rejecting message.");
+        }
+
+        return new ResponseEntity<>(smsService.save(smsRegistrationRequest), HttpStatus.OK);
     }
 }

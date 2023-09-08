@@ -14,7 +14,7 @@ services:
       - postgres
     restart: unless-stopped
   pgadmin:
-    container_name: pgadmin-microservices
+    container_name: pgadmin-phishing-validator
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-phishing-validator@test.com}

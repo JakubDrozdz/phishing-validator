@@ -6,6 +6,8 @@ import pl.jakubdrozdz.phishingvalidator.subscriber.model.Subscriber;
 import pl.jakubdrozdz.phishingvalidator.subscriber.model.SubscriberRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.subscriber.repository.SubscriberRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SubscriberService {
@@ -18,5 +20,9 @@ public class SubscriberService {
                         .isCheckEnabled(subscriberRegistrationRequest.isCheckEnabled())
                         .build()
         );
+    }
+
+    public Optional<Subscriber> isSubscriberNumberValid(String phoneNumber){
+        return subscriberRepository.findSubscriberByPhoneNumber(phoneNumber);
     }
 }

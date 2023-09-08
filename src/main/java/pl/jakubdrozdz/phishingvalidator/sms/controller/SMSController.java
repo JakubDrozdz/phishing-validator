@@ -11,6 +11,7 @@ import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.sms.utils.SMSUtils;
 import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
+import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
 
 @Slf4j
 @RestController
@@ -20,11 +21,13 @@ import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingExceptio
 public class SMSController {
     private final SMSService smsService;
 
+    private final SubscriberService subscriberService;
+
     @PostMapping
     public ResponseEntity<SMS> saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {
         if (!SMSUtils.isSMSRegistrationRequestValid(smsRegistrationRequest))
             throw new IllegalArgumentException("Invalid input: " + smsRegistrationRequest);
-        if(smsService.isSubscriberNumberValid(smsRegistrationRequest.recipient()).isEmpty()){
+        if(subscriberService.isSubscriberNumberValid(smsRegistrationRequest.recipient()).isEmpty()){
             throw new SubscriberNotExistingException("Subscriber with phone number " + smsRegistrationRequest.recipient() + " has not been found. Rejecting message.");
         }
 

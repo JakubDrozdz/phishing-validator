@@ -35,4 +35,9 @@ public class SubscriberService {
         subscriber.get().setIsCheckEnabled(shouldEnable ? 1 : 0);
         return subscriberRepository.save(subscriber.get());
     }
+
+    public boolean isPhishingValidationEnabled(String phoneNumber){
+        Subscriber subscriber = subscriberRepository.findSubscriberByPhoneNumber(phoneNumber).get();
+        return subscriber.getIsCheckEnabled() == 1;
+    }
 }

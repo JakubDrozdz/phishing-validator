@@ -8,12 +8,14 @@ import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSResponseEntity;
 import pl.jakubdrozdz.phishingvalidator.sms.repository.SMSRepository;
 import pl.jakubdrozdz.phishingvalidator.sms.utils.SMSUtils;
+import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
 
 @Service
 @RequiredArgsConstructor
 public class SMSService {
     private final SMSRepository smsRepository;
     private final PhishingValidatorController phishingValidatorController;
+    private final SubscriberService subscriberService;
 
     public SMSResponseEntity save(SMSRegistrationRequest smsRegistrationRequest){
         smsRepository.save(
@@ -29,7 +31,7 @@ public class SMSService {
 
     public SMSRegistrationRequest detectPhishing(SMSRegistrationRequest smsRegistrationRequest){
         String url = SMSUtils.extracUrlFromSMS(smsRegistrationRequest);
-        if(url == null){
+        if(url == null || !subscriberService.isPhishingValidationEnabled(smsRegistrationRequest.getRecipient())){
             if(smsRegistrationRequest.getIsPhishing() != 0){
                 smsRegistrationRequest.setIsPhishing(0);
                 return smsRegistrationRequest;

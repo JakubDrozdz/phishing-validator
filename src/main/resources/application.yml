@@ -4,11 +4,11 @@ spring:
   datasource:
     username: 'phishing-validator'
     password: 'phishing-validator'
-    url: jdbc:postgresql://localhost:5432/phishing-validator
+    url: jdbc:h2:mem:phishing-validator
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: 'true'
     hibernate:
       ddl-auto: create-drop

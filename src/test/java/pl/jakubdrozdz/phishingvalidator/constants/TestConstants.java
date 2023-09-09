@@ -2,6 +2,7 @@ package pl.jakubdrozdz.phishingvalidator.constants;
 
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
+import pl.jakubdrozdz.phishingvalidator.sms.model.SMSResponseEntity;
 import pl.jakubdrozdz.phishingvalidator.subscriber.model.Subscriber;
 import pl.jakubdrozdz.phishingvalidator.subscriber.model.SubscriberRegistrationRequest;
 
@@ -36,5 +37,19 @@ public class TestConstants {
     public static final SubscriberRegistrationRequest INVALID_SUBSCRIBER_REGISTRATION_REQUEST = SubscriberRegistrationRequest.builder()
             .phoneNumber(null)
             .isCheckEnabled(0)
+            .build();
+    public static final SMSResponseEntity SMS_RESPONSE_VALID = SMSResponseEntity.builder()
+            .sender(SENDER)
+            .recipient(RECIPIENT)
+            .message(MESSAGE)
+            .isPhishing(0)
+            .isPersisted(true)
+            .build();
+    public static final SMSResponseEntity SMS_RESPONSE_INVALID = SMSResponseEntity.builder()
+            .sender(SENDER)
+            .recipient(RECIPIENT)
+            .message(MESSAGE)
+            .isPhishing(0)
+            .isPersisted(true)
             .build();
 }

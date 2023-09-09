@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static pl.jakubdrozdz.phishingvalidator.constants.TestConstants.*;
 
-import pl.jakubdrozdz.phishingvalidator.controller.PhishingValidatorController;
-import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
+import pl.jakubdrozdz.phishingvalidator.phishing.controller.PhishingValidatorController;
+import pl.jakubdrozdz.phishingvalidator.sms.model.SMSResponseEntity;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
 import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
@@ -43,8 +43,8 @@ class SMSControllerTest {
     @Test
     void saveSMSValidSMSRegistrationRequestTest(){
         when(subscriberService.isSubscriberNumberValid(RECIPIENT)).thenReturn(Optional.of(SUBSCRIBER));
-        when(smsService.save(VALID_SMS_REGISTRATION_REQUEST)).thenReturn(SMS_VALID);
-        ResponseEntity<SMS> smsResponseEntity = smsController.saveSMS(VALID_SMS_REGISTRATION_REQUEST);
+        when(smsService.save(VALID_SMS_REGISTRATION_REQUEST)).thenReturn(SMS_RESPONSE_VALID);
+        ResponseEntity<SMSResponseEntity> smsResponseEntity = smsController.saveSMS(VALID_SMS_REGISTRATION_REQUEST);
         HttpStatus smsResponseEntityStatusCode = HttpStatus.resolve(smsResponseEntity.getStatusCode().value());
         Assertions.assertEquals(HttpStatus.OK, smsResponseEntityStatusCode);
     }

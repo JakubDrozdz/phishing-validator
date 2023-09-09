@@ -30,7 +30,6 @@ public class SMSController {
     public ResponseEntity<SMSResponseEntity> saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {
         SMSRegistrationRequest validSMSRegistrationRequest = SMSUtils.validateSMSRegistrationRequest(smsRegistrationRequest, subscriberService);
         validSMSRegistrationRequest = smsService.detectPhishing(validSMSRegistrationRequest);
-        //TODO: get subscriber and check is anti phishing is active
         if(validSMSRegistrationRequest.getIsPhishing() == 1){
             return new ResponseEntity<>(SMSResponseEntity.prepareSmsResponseEntity(validSMSRegistrationRequest, false), HttpStatus.OK);
         }

@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static pl.jakubdrozdz.phishingvalidator.constants.TestConstants.*;
+
+import pl.jakubdrozdz.phishingvalidator.controller.PhishingValidatorController;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
@@ -25,6 +27,8 @@ class SMSControllerTest {
     private SMSService smsService;
     @Mock
     private SubscriberService subscriberService;
+    @Mock
+    private PhishingValidatorController phishingValidatorController;
 
 
 
@@ -32,7 +36,8 @@ class SMSControllerTest {
     void setUp(){
         smsService = Mockito.mock(SMSService.class);
         subscriberService = Mockito.mock(SubscriberService.class);
-        smsController = new SMSController(smsService, subscriberService);
+        phishingValidatorController = Mockito.mock(PhishingValidatorController.class);
+        smsController = new SMSController(smsService, subscriberService, phishingValidatorController);
     }
 
     @Test

@@ -2,16 +2,21 @@ package pl.jakubdrozdz.phishingvalidator.sms.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubdrozdz.phishingvalidator.controller.PhishingValidatorController;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.sms.utils.SMSUtils;
 import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
+import pl.jakubdrozdz.phishingvalidator.subscriber.model.Subscriber;
 import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,14 +28,17 @@ public class SMSController {
 
     private final SubscriberService subscriberService;
 
+    private final PhishingValidatorController phishingValidatorController;
+
     @PostMapping
     public ResponseEntity<SMS> saveSMS(@RequestBody SMSRegistrationRequest smsRegistrationRequest) {
-        if (!SMSUtils.isSMSRegistrationRequestValid(smsRegistrationRequest))
-            throw new IllegalArgumentException("Invalid input: " + smsRegistrationRequest);
-        if(subscriberService.isSubscriberNumberValid(smsRegistrationRequest.recipient()).isEmpty()){
-            throw new SubscriberNotExistingException("Subscriber with phone number " + smsRegistrationRequest.recipient() + " has not been found. Rejecting message.");
-        }
-
-        return new ResponseEntity<>(smsService.save(smsRegistrationRequest), HttpStatus.OK);
+        SMS validSMS = SMSUtils.validateSMS(smsRegistrationRequest, subscriberService, smsService);
+        return new ResponseEntity<>(validSMS, HttpStatus.OK);
+    }
+    @PostMapping("/phsishing-validator")
+    public ResponseEntity<Subscriber> setPhishingValidatorForSubscriber(@RequestBody SMSRegistrationRequest smsRegistrationRequest){
+        SMSUtils.validateSMS(smsRegistrationRequest, subscriberService, smsService);
+        Subscriber subscriber = phishingValidatorController.handlePhishingValidatorActivation(smsRegistrationRequest);
+        return new ResponseEntity<>(subscriber, HttpStatus.OK);
     }
 }

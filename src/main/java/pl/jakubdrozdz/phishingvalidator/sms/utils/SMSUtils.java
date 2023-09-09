@@ -2,12 +2,16 @@ package pl.jakubdrozdz.phishingvalidator.sms.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pl.jakubdrozdz.phishingvalidator.sms.model.SMS;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
 import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
-import pl.jakubdrozdz.phishingvalidator.subscriber.model.Subscriber;
 import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
+
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,15 +22,32 @@ public class SMSUtils {
             log.error("SMSRegistrationRequest is null. Aborting execution");
             return false;
         }
-        return !(smsRegistrationRequest.sender() == null || smsRegistrationRequest.recipient() == null || smsRegistrationRequest.message() == null);
+        return !(smsRegistrationRequest.getSender() == null || smsRegistrationRequest.getRecipient() == null || smsRegistrationRequest.getMessage() == null);
     }
 
-    public static SMS validateSMS(SMSRegistrationRequest smsRegistrationRequest, SubscriberService subscriberService, SMSService smsService){
+    public static SMSRegistrationRequest validateSMSRegistrationRequest(SMSRegistrationRequest smsRegistrationRequest, SubscriberService subscriberService){
         if (!SMSUtils.isSMSRegistrationRequestValid(smsRegistrationRequest))
             throw new IllegalArgumentException("Invalid input: " + smsRegistrationRequest);
-        if(subscriberService.isSubscriberNumberValid(smsRegistrationRequest.recipient()).isEmpty()){
-            throw new SubscriberNotExistingException("Subscriber with phone number " + smsRegistrationRequest.recipient() + " has not been found. Rejecting message.");
+        if(subscriberService.isSubscriberNumberValid(smsRegistrationRequest.getRecipient()).isEmpty()){
+            throw new SubscriberNotExistingException("Subscriber with phone number " + smsRegistrationRequest.getRecipient() + " has not been found. Rejecting message.");
         }
-        return smsService.save(smsRegistrationRequest);
+        return smsRegistrationRequest;
+    }
+
+    public static String extracUrlFromSMS(SMSRegistrationRequest smsRegistrationRequest){
+        String message = smsRegistrationRequest.getMessage();
+        Pattern urlPattern = Pattern.compile("https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$");
+        Matcher urlMatcher = urlPattern.matcher(message);
+
+        return (urlMatcher.find() && isUrlValid(urlMatcher.group())) ? urlMatcher.group() : null;
+    }
+
+    private static boolean isUrlValid(String url){
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (URISyntaxException | MalformedURLException e) {
+            return false;
+        }
     }
 }

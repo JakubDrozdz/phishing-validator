@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.when;
 
 import pl.jakubdrozdz.phishingvalidator.constants.TestConstants;
+import pl.jakubdrozdz.phishingvalidator.phishing.controller.PhishingValidatorController;
 import pl.jakubdrozdz.phishingvalidator.sms.repository.SMSRepository;
 
 class SMSServiceTest {
@@ -18,11 +19,14 @@ class SMSServiceTest {
 
     @Mock
     private SMSRepository smsRepository;
+    @Mock
+    private PhishingValidatorController phishingValidatorController;
 
     @BeforeEach
     void setUp(){
         smsRepository = Mockito.mock(SMSRepository.class);
-        smsService = new SMSService(smsRepository);
+        phishingValidatorController = Mockito.mock(PhishingValidatorController.class);
+        smsService = new SMSService(smsRepository, phishingValidatorController);
     }
 
     @Test

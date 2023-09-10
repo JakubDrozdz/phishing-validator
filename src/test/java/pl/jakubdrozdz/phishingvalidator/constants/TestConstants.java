@@ -11,6 +11,7 @@ public class TestConstants {
     public static final String SENDER = "123456789";
     public static final String RECIPIENT = "987654321";
     public static final String MESSAGE = "This is test execution! Ignore!";
+    public static final String PHISHING_MESSAGE = "Test from http://www.mbank.pl.online.pll/log-in";
     public static final Subscriber SUBSCRIBER = Subscriber.builder().phoneNumber(RECIPIENT).isCheckEnabled(0).build();
     public static final SMSRegistrationRequest VALID_SMS_REGISTRATION_REQUEST = SMSRegistrationRequest.builder()
             .sender(TestConstants.SENDER)
@@ -48,8 +49,21 @@ public class TestConstants {
     public static final SMSResponseEntity SMS_RESPONSE_INVALID = SMSResponseEntity.builder()
             .sender(SENDER)
             .recipient(RECIPIENT)
-            .message(MESSAGE)
+            .message(PHISHING_MESSAGE)
             .isPhishing(0)
-            .isPersisted(true)
+            .isPersisted(false)
+            .build();
+
+    public static final SMSRegistrationRequest VALID_SMS_REGISTRATION_REQUEST_PHISHING = SMSRegistrationRequest.builder()
+            .sender(SENDER)
+            .recipient(RECIPIENT)
+            .message(PHISHING_MESSAGE)
+            .isPhishing(0)
+            .build();
+    public static final SMSRegistrationRequest VALID_SMS_REGISTRATION_REQUEST_PHISHING_WITH_STATUS = SMSRegistrationRequest.builder()
+            .sender(SENDER)
+            .recipient(RECIPIENT)
+            .message(PHISHING_MESSAGE)
+            .isPhishing(1)
             .build();
 }

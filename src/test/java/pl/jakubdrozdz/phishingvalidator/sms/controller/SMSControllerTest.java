@@ -43,8 +43,19 @@ class SMSControllerTest {
     @Test
     void saveSMSValidSMSRegistrationRequestTest(){
         when(subscriberService.isSubscriberNumberValid(RECIPIENT)).thenReturn(Optional.of(SUBSCRIBER));
+        when(smsService.detectPhishing(VALID_SMS_REGISTRATION_REQUEST)).thenReturn(VALID_SMS_REGISTRATION_REQUEST);
         when(smsService.save(VALID_SMS_REGISTRATION_REQUEST)).thenReturn(SMS_RESPONSE_VALID);
         ResponseEntity<SMSResponseEntity> smsResponseEntity = smsController.saveSMS(VALID_SMS_REGISTRATION_REQUEST);
+        HttpStatus smsResponseEntityStatusCode = HttpStatus.resolve(smsResponseEntity.getStatusCode().value());
+        Assertions.assertEquals(HttpStatus.OK, smsResponseEntityStatusCode);
+    }
+
+    @Test
+    void saveSMSValidSMSRegistrationRequestPhishingTest() {
+        when(subscriberService.isSubscriberNumberValid(RECIPIENT)).thenReturn(Optional.of(SUBSCRIBER));
+        when(smsService.detectPhishing(VALID_SMS_REGISTRATION_REQUEST_PHISHING)).thenReturn(VALID_SMS_REGISTRATION_REQUEST_PHISHING_WITH_STATUS);
+        when(smsService.save(VALID_SMS_REGISTRATION_REQUEST_PHISHING_WITH_STATUS)).thenReturn(SMS_RESPONSE_INVALID);
+        ResponseEntity<SMSResponseEntity> smsResponseEntity = smsController.saveSMS(VALID_SMS_REGISTRATION_REQUEST_PHISHING);
         HttpStatus smsResponseEntityStatusCode = HttpStatus.resolve(smsResponseEntity.getStatusCode().value());
         Assertions.assertEquals(HttpStatus.OK, smsResponseEntityStatusCode);
     }

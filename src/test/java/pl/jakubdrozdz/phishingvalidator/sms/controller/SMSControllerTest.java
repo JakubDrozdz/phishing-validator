@@ -13,7 +13,7 @@ import static pl.jakubdrozdz.phishingvalidator.constants.TestConstants.*;
 import pl.jakubdrozdz.phishingvalidator.phishing.controller.PhishingValidatorController;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSResponseEntity;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
-import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
+import pl.jakubdrozdz.phishingvalidator.subscriber.exception.SubscriberNotExistingException;
 import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
 
 import java.util.Optional;

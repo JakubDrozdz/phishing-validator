@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.jakubdrozdz.phishingvalidator.sms.model.SMSRegistrationRequest;
 import pl.jakubdrozdz.phishingvalidator.sms.service.SMSService;
-import pl.jakubdrozdz.phishingvalidator.subscriber.SubscriberNotExistingException;
+import pl.jakubdrozdz.phishingvalidator.subscriber.exception.SubscriberNotExistingException;
 import pl.jakubdrozdz.phishingvalidator.subscriber.service.SubscriberService;
 
 import java.net.MalformedURLException;

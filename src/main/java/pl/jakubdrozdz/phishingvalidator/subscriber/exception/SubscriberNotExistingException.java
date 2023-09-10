@@ -1,4 +1,4 @@
-package pl.jakubdrozdz.phishingvalidator.subscriber;
+package pl.jakubdrozdz.phishingvalidator.subscriber.exception;
 
 public class SubscriberNotExistingException extends RuntimeException{
     public SubscriberNotExistingException(String message){

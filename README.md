@@ -21,3 +21,41 @@ When the phishing validation is enabled only non-phishing messages are stored in
 * improve test coverage
 * add logic to assign message with subscriber and persist
 * add view for invoking requests
+
+## Testing
+
+Application has Swagger UI enabled to allow quick test of endpoints.
+The shortened URL for swagger is available in properties file
+
+### Subscribers
+
+To add subscribers the following JSON should be send to /api/v1/subscribers. Field isCheckEnabled is optional and can be
+removed.
+
+{
+"phoneNumber": "string",
+"isCheckEnabled": 0
+}
+
+### SMS
+
+To register SMS the following JSON should be send to /api/v1/sms. Field isPhishing is optional and can be removed.
+
+{
+"sender": "string",
+"recipient": "string",
+"message": "string",
+"isPhishing": 0
+}
+
+### Phishing validator activation
+
+To activate/deactivate phishing validation service the following JSON should be send to /api/v1/sms/. Field isPhishing
+is optional and can be removed.
+
+{
+"sender": "string",
+"recipient": "string",
+"message": "string",
+"isPhishing": 0
+}
